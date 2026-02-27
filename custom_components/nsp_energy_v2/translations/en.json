@@ -2,8 +2,22 @@
   "config": {
     "step": {
       "user": {
-        "title": "NSP TOD Setup",
-        "description": "This integration supports NSP's Time-of-Day rates, available to all residential customers looking to shift energy loads. DO NOT change these rates unless you know what you are doing. 2026 rates are pre-filled.",
+        "title": "NSP Energy Rates Setup",
+        "description": "This integration tracks Nova Scotia Power's Time-Varying Pricing (TVP). Rates are determined by the time of day and season as recorded by your smart meter.\n\n**Warning:** Do not change these rates unless you are certain NSP has updated their tariff. 2026 rates are pre-filled.\n\nNote: Including tax adds 15% HST to calculations.",
+        "data": {
+          "peak_price": "Peak Price ($/kWh)",
+          "mid_peak_price": "Mid-Peak Price ($/kWh)",
+          "off_peak_price": "Off-Peak Price ($/kWh)",
+          "include_tax": "Include 15% HST Tax"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Adjust NSP Rates",
+        "description": "Update these values if NSP changes their rate structure in the future. It is recommended to leave these at default unless you know exactly what you are doing.",
         "data": {
           "peak_price": "Peak Price ($/kWh)",
           "mid_peak_price": "Mid-Peak Price ($/kWh)",
