@@ -1,9 +1,0 @@
-{
-  "domain": "nsp_energy_v2",
-  "name": "NSP Energy Rates",
-  "version": "2.1.3",
-  "config_flow": true,
-  "iot_class": "local_polling",
-  "dependencies": [],
-  "codeowners": []
-}
