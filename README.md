@@ -9,13 +9,7 @@ Automated tracking of Nova Scotia Power Time-of-Day rates (2026 Tariff).
 ## Installation
 1. Copy the `nsp_energy_v2` folder to your `custom_components` directory.
 2. Restart Home Assistant.
-3. Go to **Settings > Integrations > Add Integration** and search for **"NSP Energy Rates"**.
-
-## Features
-- Real-time pricing for Peak, Mid-Peak, and Off-Peak.
-- Automatic seasonal switching (Winter/Non-Winter).
-- 15% HST Toggle.
-- 5 Sensors for price, period, and tax status.
+3. Add via **Settings > Integrations**.
 
 ## Disclaimer
-This integration is not affiliated with or endorsed by Nova Scotia Power. Rates are based on public tariff information.
+Not affiliated with Nova Scotia Power. Rates based on public tariff information.
