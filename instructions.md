@@ -1,4 +1,4 @@
-# NSP Energy Rates: User Guide & Installation
+# NSP Energy Rates: User Guide & Installation (v2.1.4)
 
 ## 🛠 Prerequisites: Energy Monitoring
 To use this integration effectively with the Home Assistant Energy Dashboard, you **must have an energy monitoring device** (e.g., Emporia Vue, Shelly EM, Iotawatt, or a P1 Meter). This integration provides the *price* data, while your hardware provides the *usage* data.
@@ -6,7 +6,7 @@ To use this integration effectively with the Home Assistant Energy Dashboard, yo
 ## 🔄 Converting Power (kW) to Energy (kWh)
 Most monitoring devices provide real-time power in Watts (W) or Kilowatts (kW). Home Assistant's Energy Dashboard requires cumulative Energy in **kWh**.
 
-If your device does not provide a kWh entity, follow these steps to create one using the **[Riemann sum integral integration](https://www.home-assistant.io/integrations/integration/)**:
+If your device does not provide a kWh entity, follow these steps to create one using the official **[Riemann sum integral integration](https://www.home-assistant.io/integrations/integration/)**:
 
 1. Go to **Settings > Devices & Services > Helpers**.
 2. Click **Create Helper** > **Riemann sum integral sensor**.
