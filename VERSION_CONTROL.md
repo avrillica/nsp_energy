@@ -8,3 +8,5 @@
 | **2.1.2** | Stable | 2026-02-25 | **UX Update:** Added comprehensive user instructions and load-shifting automation strategies. |
 | **2.1.3** | Obsolete | 2026-02-27 | GitHub Launch and initial HACS support. |
 | **2.1.4** | **Current** | 2026-02-27 | **Documentation Update:** Enhanced prerequisites for energy monitoring hardware and corrected Riemann sum setup instructions. |
+| **2.1.5** | Obsolete | 2026-02-27 | Added Refoss EM16 support and automation examples. |
+| **2.1.6** | **Current** | 2026-02-27 | **Correction:** Updated documentation to reflect that TOD/TOU rates are available to all residential customers, not just those with heat pumps/ETS. |
