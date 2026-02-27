@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 import homeassistant.util.dt as dt_util
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.const import CURRENCY_DOLLAR
@@ -7,13 +7,11 @@ from .const import *
 async def async_setup_entry(hass, entry, async_add_entities):
     conf = {**entry.data, **entry.options}
     tax = 1.15 if conf.get(CONF_INCLUDE_TAX, True) else 1.0
-    
     prices = {
         "Peak": conf.get(CONF_PEAK_PRICE, DEFAULT_PEAK) * tax,
         "Mid-Peak": conf.get(CONF_MID_PEAK_PRICE, DEFAULT_MID) * tax,
         "Off-Peak": conf.get(CONF_OFF_PEAK_PRICE, DEFAULT_OFF) * tax
     }
-
     async_add_entities([
         NSPPriceSensor(entry, prices, "NSP Current Price", 0),
         NSPStatusSensor(entry, "NSP Current Period", 0),
@@ -35,24 +33,22 @@ def get_nsp_period(offset_hours=0):
 class NSPPriceSensor(SensorEntity):
     def __init__(self, entry, prices, name, offset):
         self._prices, self._attr_name, self._offset = prices, name, offset
-        self._attr_unique_id = f"nsp_v2_{entry.entry_id}_{name.lower().replace(' ', '_')}"
+        self._attr_unique_id = f"nspv2_{entry.entry_id}_{name.lower().replace(' ', '_')}"
         self._attr_native_unit_of_measurement = f"{CURRENCY_DOLLAR}/kWh"
         self._attr_device_class = SensorDeviceClass.MONETARY
     @property
-    def native_value(self): 
-        return round(self._prices.get(get_nsp_period(self._offset)), 5)
+    def native_value(self): return round(self._prices.get(get_nsp_period(self._offset)), 5)
 
 class NSPStatusSensor(SensorEntity):
     def __init__(self, entry, name, offset):
         self._attr_name, self._offset = name, offset
-        self._attr_unique_id = f"nsp_v2_{entry.entry_id}_{name.lower().replace(' ', '_')}"
+        self._attr_unique_id = f"nspv2_{entry.entry_id}_{name.lower().replace(' ', '_')}"
     @property
     def native_value(self): return get_nsp_period(self._offset)
 
 class NSPTaxSensor(SensorEntity):
     def __init__(self, entry, active):
-        self._attr_name = "NSP Tax Active"
-        self._attr_unique_id = f"nsp_v2_{entry.entry_id}_tax_status"
+        self._attr_name, self._attr_unique_id = "NSP Tax Active", f"nspv2_{entry.entry_id}_tax_status"
         self._state = "Yes (15%)" if active else "No"
     @property
     def native_value(self): return self._state
