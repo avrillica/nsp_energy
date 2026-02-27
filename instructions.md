@@ -1,21 +1,30 @@
 # NSP Energy Rates: User Guide & Installation
 
-## 🛠 Installation via HACS (Custom Repository)
-Since this is a specialized integration, you can add it to HACS manually:
+## 🛠 Prerequisites: Energy Monitoring
+To use this integration effectively with the Home Assistant Energy Dashboard, you **must have an energy monitoring device** (e.g., Emporia Vue, Shelly EM, Iotawatt, or a P1 Meter). This integration provides the *price* data, while your hardware provides the *usage* data.
+
+## 🔄 Converting Power (kW) to Energy (kWh)
+Most monitoring devices provide real-time power in Watts (W) or Kilowatts (kW). Home Assistant's Energy Dashboard requires cumulative Energy in **kWh**. 
+
+If your device does not provide a kWh entity, you must use the **Riemann Sum Integral** integration:
+1. Go to **Settings > Devices & Services > Helpers**.
+2. Click **Create Helper** > **[Riemann sum integral sensor](https://www.home-assistant.io/integrations/integration/)**.
+3. **Input sensor:** Select your real-time Power sensor (W or kW).
+4. **Integration method:** Select **Left Riemann sum** (this is the most accurate for power spikes).
+5. **Precision:** Set to 3 decimals.
+
+
+
+## 📥 Installation via HACS (Custom Repository)
 1. Open **HACS** in Home Assistant.
-2. Click the **three dots** in the top right corner and select **Custom repositories**.
-3. Paste the URL: `https://github.com/avrillica/nsp_energy`
-4. Under 'Category', select **Integration**.
-5. Click **Add**, then click the new 'NSP Energy Rates' card and select **Download**.
+2. Click the **three dots** (top right) > **Custom repositories**.
+3. Paste: `https://github.com/avrillica/nsp_energy`
+4. Category: **Integration**.
+5. Click **Add**, then find 'NSP Energy Rates' and select **Download**.
 6. **Restart** Home Assistant.
 
-## ⚙️ Configuration
-1. Go to **Settings > Integrations > Add Integration**.
-2. Search for **NSP Energy Rates**.
-3. **Warning:** The 2026 rates are pre-filled. Recommend not to change unless you know what you are doing, in case NSP changes the rates in the future.
-
 ## 📊 Energy Dashboard Setup
-If your power monitor provides Watts (W), use the **Riemann sum integral** helper to convert it to Energy (kWh).
-1. Go to **Settings > Helpers > Create Helper > Riemann sum integral sensor**.
-2. **Input sensor:** Your Power sensor (W). **Method:** Left Riemann sum.
-3. In the **Energy Dashboard**, add your new kWh sensor and select `sensor.nsp_current_price` as the price entity.
+1. Go to **Settings > Dashboards > Energy**.
+2. Under **Electricity Grid**, click **Add Consumption**.
+3. Select your newly created **kWh sensor**.
+4. Choose **"Use an entity with current price"** and pick `sensor.nsp_current_price`.
