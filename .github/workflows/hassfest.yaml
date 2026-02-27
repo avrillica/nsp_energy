@@ -1,9 +1,5 @@
 name: Validate with hassfest
-
-on:
-  push:
-  pull_request:
-
+on: [push, pull_request]
 jobs:
   validate:
     runs-on: "ubuntu-latest"
