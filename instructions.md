@@ -6,7 +6,7 @@ To use this integration effectively with the Home Assistant Energy Dashboard, yo
 ## 🔄 Converting Power (kW) to Energy (kWh)
 Most monitoring devices provide real-time power in Watts (W) or Kilowatts (kW). Home Assistant's Energy Dashboard requires cumulative Energy in **kWh**.
 
-If your device does not provide a kWh entity, follow these steps to create one using the **[Riemann sum integral integration]([https://www.home-assistant.io/integrations/integration/](https://github.com/yunusp01/auto_utility_meter))**:
+If your device does not provide a kWh entity, follow these steps to create one using the **[Riemann sum integral integration](https://www.home-assistant.io/integrations/integration/)**:
 
 1. Go to **Settings > Devices & Services > Helpers**.
 2. Click **Create Helper** > **Riemann sum integral sensor**.
