@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "NSP TOD Setup",
-        "description": "WARNING: Recommend not to change unless you know what you are doing, in case NSP changes the rates in the future. 2026 rates are pre-filled.\n\nNote: Including tax adds 15% HST to calculations.",
+        "description": "DO NOT change these rates unless you know what you are doing. 2026 rates are pre-filled.\n\nNote: Including tax adds 15% HST to calculations.",
         "data": {
           "peak_price": "Peak Price ($/kWh)",
           "mid_peak_price": "Mid-Peak Price ($/kWh)",
