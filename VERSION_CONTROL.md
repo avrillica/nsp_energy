@@ -1,7 +1,1 @@
-# Version Control: NSP Energy Rates
-
-| Version | Status | Changes |
-| :--- | :--- | :--- |
-| **2.1.1** | Stable | Fixed 500 error in config_flow via data merging. |
-| **2.1.2** | Stable | Added user instructions and automation strategies. |
-| **2.1.3** | **Current** | **GitHub Launch:** Configured for `avrillica/nsp_energy`. Added MIT License, .github/hassfest automation, and HACS compatibility. |
+Project: NSP Energy Rates IntegrationVersionStatusChanges1.0.0ObsoleteInitial proof of concept. Hard-coded 2025 rates.2.0.0ObsoleteDomain shift to nsp_energy_v2 to fix HA cache issues. Added en.json.2.1.1StableFixed 500 error in config_flow via data merging.2.1.2StableAdded user instructions and automation strategies.2.1.3CurrentGitHub Launch: Finalized for avrillica/nsp_energy. Added MIT License, .github automation, and HACS compatibility.
