@@ -1,11 +1,11 @@
 {
   "domain": "nsp_energy_v2",
-  "name": "NSP Energy Rates",
-  "version": "2.1.6",
-  "config_flow": true,
+  "name": "NSP Energy Monitor",
+  "version": "2.1.5",
+  "documentation": "https://github.com/yourusername/nsp_energy_v2",
+  "issue_tracker": "https://github.com/yourusername/nsp_energy_v2/issues",
+  "dependencies": [],
+  "codeowners": ["@yourusername"],
   "iot_class": "local_polling",
-  "integration_type": "service",
-  "documentation": "https://github.com/avrillica/nsp_energy",
-  "issue_tracker": "https://github.com/avrillica/nsp_energy/issues",
-  "codeowners": ["@avrillica"]
+  "integration_type": "service"
 }
