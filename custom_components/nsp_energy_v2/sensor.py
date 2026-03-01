@@ -1,41 +1,73 @@
-import datetime
+from homeassistant.components.sensor import SensorEntity
+from datetime import datetime
+from .const import DOMAIN, CONF_PEAK_PRICE, CONF_MID_PRICE, CONF_OFFPEAK_PRICE, CONF_INCLUDE_TAX
 
-# Correct 2026 Rates (as configured in your options)
-# PEAK: 0.23821 | MID: 0.19243 | OFF: 0.11966
+async def async_setup_entry(hass, entry, async_add_entities):
+    async_add_entities([NSPRateSensor(entry), NSPPeriodSensor(entry)])
 
-def get_nsp_period(now):
-    month = now.month
-    hour = now.hour
-    weekday = now.weekday()  # 0=Monday, 6=Sunday
+class NSPRateSensor(SensorEntity):
+    def __init__(self, entry):
+        self._entry = entry
+        self._attr_name = "NSP Current Rate"
+        self._attr_unique_id = f"{entry.entry_id}_rate"
+        self._attr_unit_of_measurement = "$/kWh"
 
-    # SEASON CHECK: Winter is Dec (12), Jan (1), Feb (2)
-    is_winter = month in [12, 1, 2]
+    @property
+    def state(self):
+        now = datetime.now()
+        month = now.month
+        hour = now.hour
+        is_weekend = now.weekday() >= 5
+        
+        # 1. Season Logic
+        is_winter = month in [12, 1, 2] # Dec, Jan, Feb
+        
+        # 2. Period Logic
+        period = "off_peak"
+        if not is_weekend:
+            if is_winter:
+                if (7 <= hour < 12) or (16 <= hour < 23):
+                    period = "peak"
+                elif (12 <= hour < 16):
+                    period = "mid_peak"
+            else: # Non-Winter (March - Nov)
+                if (7 <= hour < 23): # 7am-11pm is all Mid-Peak in non-winter TOD
+                    period = "mid_peak"
 
-    # WEEKENDS & HOLIDAYS: Always Off-Peak
-    if weekday >= 5:
+        # 3. Rate Mapping
+        rates = {
+            "peak": self._entry.options.get(CONF_PEAK_PRICE, 0.23821),
+            "mid_peak": self._entry.options.get(CONF_MID_PRICE, 0.19243),
+            "off_peak": self._entry.options.get(CONF_OFFPEAK_PRICE, 0.11966)
+        }
+        
+        price = rates.get(period)
+        if self._entry.options.get(CONF_INCLUDE_TAX, True):
+            price = price * 1.15
+            
+        return round(price, 5)
+
+class NSPPeriodSensor(SensorEntity):
+    def __init__(self, entry):
+        self._entry = entry
+        self._attr_name = "NSP Current Period"
+        self._attr_unique_id = f"{entry.entry_id}_period"
+
+    @property
+    def state(self):
+        now = datetime.now()
+        month = now.month
+        hour = now.hour
+        is_weekend = now.weekday() >= 5
+        
+        if is_weekend:
+            return "off_peak"
+        
+        is_winter = month in [12, 1, 2]
+        if is_winter:
+            if (7 <= hour < 12) or (16 <= hour < 23): return "peak"
+            if (12 <= hour < 16): return "mid_peak"
+        else:
+            if (7 <= hour < 23): return "mid_peak"
+            
         return "off_peak"
-
-    # WEEKDAY LOGIC
-    if is_winter:
-        # Winter Peak: 7-12 & 16-23
-        if (7 <= hour < 12) or (16 <= hour < 23):
-            return "peak"
-        return "off_peak"
-    else:
-        # Non-Winter (March - November)
-        # Peak: 7-12 & 16-23 | Mid: 12-16
-        if (7 <= hour < 12) or (16 <= hour < 23):
-            return "peak"
-        elif (12 <= hour < 16):
-            return "mid_peak"
-        return "off_peak"
-
-# PRICE CALCULATION
-# This ensures the sensor actually updates when the period changes
-current_period = get_nsp_period(datetime.datetime.now())
-raw_price = config_entry.options.get(f"{current_period}_price")
-
-if config_entry.options.get("include_tax"):
-    final_price = float(raw_price) * 1.15
-else:
-    final_price = float(raw_price)
