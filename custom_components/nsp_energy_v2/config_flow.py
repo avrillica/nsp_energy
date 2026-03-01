@@ -7,7 +7,7 @@ class NSPEnergyFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         if user_input is not None:
-            return self.async_create_entry(title="NSP Energy", data=user_input)
+            return self.async_create_entry(title="NSP Energy Monitor", data=user_input)
 
         return self.async_show_form(
             step_id="user",
@@ -17,6 +17,7 @@ class NSPEnergyFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_OFFPEAK_PRICE, default=DEFAULT_OFF): vol.Coerce(float),
                 vol.Required(CONF_INCLUDE_TAX, default=True): bool,
             }),
+            description_placeholders={"warning": "Note: Only change rates if NSP has officially updated their tariffs."}
         )
 
     @staticmethod
