@@ -9,25 +9,18 @@ def calculate_nsp_period():
     now = datetime.now()
     month = now.month
     hour = now.hour
-    is_weekend = now.weekday() >= 5 # Sat=5, Sun=6
-    
-    # 2026 Seasonality: Winter is Dec, Jan, Feb
+    is_weekend = now.weekday() >= 5
     is_winter = month in [12, 1, 2]
     
     if is_weekend:
         return "off_peak"
 
     if is_winter:
-        # Winter Weekdays: Peak (7-12, 16-23), Mid (12-16), Off (23-7)
-        if (7 <= hour < 12) or (16 <= hour < 23):
-            return "peak"
-        elif (12 <= hour < 16):
-            return "mid_peak"
-        else:
-            return "off_peak"
+        if (7 <= hour < 12) or (16 <= hour < 23): return "peak"
+        elif (12 <= hour < 16): return "mid_peak"
+        else: return "off_peak"
     else:
-        # Non-Winter (March - Nov): Mid (7-23), Off (23-7)
-        # Note: Peak rate does not apply in non-winter months
+        # Non-Winter (March - Nov): Mid-Peak all day 7am-11pm
         if (7 <= hour < 23):
             return "mid_peak"
         else:
@@ -44,20 +37,14 @@ class NSPRateSensor(SensorEntity):
     @property
     def state(self):
         period = calculate_nsp_period()
-        
-        # Pull rates from options (saved in the UI)
         rates = {
             "peak": self._entry.options.get(CONF_PEAK_PRICE, 0.23821),
             "mid_peak": self._entry.options.get(CONF_MID_PRICE, 0.19243),
             "off_peak": self._entry.options.get(CONF_OFFPEAK_PRICE, 0.11966)
         }
-        
         price = rates.get(period, 0.11966)
-        
-        # Apply 15% HST if toggled ON
         if self._entry.options.get(CONF_INCLUDE_TAX, True):
             price = price * 1.15
-            
         return round(price, 5)
 
 class NSPPeriodSensor(SensorEntity):
