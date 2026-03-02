@@ -9,16 +9,16 @@ def calculate_nsp_period():
     now = datetime.now()
     month = now.month
     hour = now.hour
-    is_weekend = now.weekday() >= 5
+    is_weekend = now.weekday() >= 5 # Saturday & Sunday
     
-    # Seasonality: Winter is ONLY Dec, Jan, Feb
+    # 2026 Seasonality: Winter = Dec, Jan, Feb. Non-Winter = Mar to Nov.
     is_winter = month in [12, 1, 2]
     
     if is_weekend:
         return "off_peak"
 
     if is_winter:
-        # Winter Weekdays (Dec-Feb)
+        # Winter Schedule (Dec-Feb)
         if (7 <= hour < 12) or (16 <= hour < 23):
             return "peak"
         elif (12 <= hour < 16):
@@ -26,8 +26,7 @@ def calculate_nsp_period():
         else:
             return "off_peak"
     else:
-        # Non-Winter Weekdays (March - Nov)
-        # Daytime is Mid-Peak, Night is Off-Peak
+        # Non-Winter Schedule (March-Nov)
         if (7 <= hour < 23):
             return "mid_peak"
         else:
@@ -50,11 +49,8 @@ class NSPRateSensor(SensorEntity):
             "off_peak": self._entry.options.get(CONF_OFFPEAK_PRICE, 0.11966)
         }
         price = rates.get(period, 0.11966)
-        
-        # Apply 15% HST if enabled
         if self._entry.options.get(CONF_INCLUDE_TAX, True):
             price = price * 1.15
-            
         return round(price, 5)
 
 class NSPPeriodSensor(SensorEntity):
