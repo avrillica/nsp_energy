@@ -22,7 +22,7 @@ def calculate_period(target_time):
         elif (12 <= hour < 16): return "mid_peak"
         else: return "off_peak"
     else:
-        # Non-Winter (March-Nov): Mid-Peak 7am-11pm
+        # March-Nov Non-Winter Schedule
         return "mid_peak" if (7 <= hour < 23) else "off_peak"
 
 def get_price(period, entry):
