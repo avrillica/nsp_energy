@@ -1,5 +1,4 @@
 DOMAIN = "nsp_energy_v2"
-
 CONF_PEAK_PRICE = "peak_price"
 CONF_MID_PRICE = "mid_price"
 CONF_OFFPEAK_PRICE = "offpeak_price"
