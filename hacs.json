@@ -1,6 +1,6 @@
 {
-  "name": "NSP Energy Rates",
+  "name": "NSP Energy Monitor",
+  "country": "CA",
   "homeassistant": "2024.1.0",
-  "render_readme": true,
-  "country": "CA"
+  "render_readme": true
 }
