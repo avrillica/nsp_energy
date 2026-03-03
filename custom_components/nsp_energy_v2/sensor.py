@@ -1,4 +1,8 @@
-from homeassistant.components.sensor import SensorEntity, SensorDeviceClass, SensorStateClass
+from homeassistant.components.sensor import (
+    SensorEntity, 
+    SensorDeviceClass, 
+    SensorStateClass
+)
 from datetime import datetime, timedelta
 from .const import DOMAIN, CONF_PEAK_PRICE, CONF_MID_PRICE, CONF_OFFPEAK_PRICE, CONF_INCLUDE_TAX
 
@@ -23,23 +27,36 @@ def calculate_period(target_time):
     return "mid_peak" if (7 <= hour < 23) else "off_peak"
 
 def get_price(period, entry):
-    rates = {"peak": entry.options.get(CONF_PEAK_PRICE, 0.23821), "mid_peak": entry.options.get(CONF_MID_PRICE, 0.19243), "off_peak": entry.options.get(CONF_OFFPEAK_PRICE, 0.11966)}
+    rates = {
+        "peak": entry.options.get(CONF_PEAK_PRICE, 0.23821),
+        "mid_peak": entry.options.get(CONF_MID_PRICE, 0.19243),
+        "off_peak": entry.options.get(CONF_OFFPEAK_PRICE, 0.11966)
+    }
     price = rates.get(period, 0.11966)
-    if entry.options.get(CONF_INCLUDE_TAX, True): price *= 1.15
+    if entry.options.get(CONF_INCLUDE_TAX, True):
+        price *= 1.15
     return round(price, 5)
 
 class NSPCurrentPriceSensor(SensorEntity):
     _attr_device_class = SensorDeviceClass.MONETARY
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "$/kWh"
+
     def __init__(self, entry):
-        self._entry, self._attr_name = entry, "NSP Current Price"
-        self._attr_unique_id = f"{entry.entry_id}_curr_price"
+        self._entry = entry
+        self._attr_name = "NSP Current Price"
+        # Adding _v218 forces a brand new clean database entry (Line Graph)
+        self._attr_unique_id = f"{entry.entry_id}_curr_price_v218"
+
     @property
-    def native_value(self): return get_price(calculate_period(datetime.now()), self._entry)
+    def native_value(self):
+        return get_price(calculate_period(datetime.now()), self._entry)
 
 class NSPCurrentPeriodSensor(SensorEntity):
-    def __init__(self, entry): self._entry, self._attr_name, self._attr_unique_id = entry, "NSP Current Period", f"{entry.entry_id}_curr_period"
+    def __init__(self, entry):
+        self._entry = entry
+        self._attr_name = "NSP Current Period"
+        self._attr_unique_id = f"{entry.entry_id}_curr_period_v218"
     @property
     def state(self): return calculate_period(datetime.now())
 
@@ -48,17 +65,25 @@ class NSPNextPriceSensor(SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "$/kWh"
     def __init__(self, entry):
-        self._entry, self._attr_name = entry, "NSP Next Price"
-        self._attr_unique_id = f"{entry.entry_id}_next_price"
+        self._entry = entry
+        self._attr_name = "NSP Next Price"
+        self._attr_unique_id = f"{entry.entry_id}_next_price_v218"
     @property
-    def native_value(self): return get_price(calculate_period(datetime.now() + timedelta(hours=1)), self._entry)
+    def native_value(self):
+        return get_price(calculate_period(datetime.now() + timedelta(hours=1)), self._entry)
 
 class NSPNextPeriodSensor(SensorEntity):
-    def __init__(self, entry): self._entry, self._attr_name, self._attr_unique_id = entry, "NSP Next Period", f"{entry.entry_id}_next_period"
+    def __init__(self, entry):
+        self._entry = entry
+        self._attr_name = "NSP Next Period"
+        self._attr_unique_id = f"{entry.entry_id}_next_period_v218"
     @property
     def state(self): return calculate_period(datetime.now() + timedelta(hours=1))
 
 class NSPTaxActiveSensor(SensorEntity):
-    def __init__(self, entry): self._entry, self._attr_name, self._attr_unique_id = entry, "NSP Tax Active", f"{entry.entry_id}_tax_active"
+    def __init__(self, entry):
+        self._entry = entry
+        self._attr_name = "NSP Tax Active"
+        self._attr_unique_id = f"{entry.entry_id}_tax_active_v218"
     @property
     def state(self): return "Yes" if self._entry.options.get(CONF_INCLUDE_TAX, True) else "No"
