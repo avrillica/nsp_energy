@@ -45,8 +45,8 @@ class NSPCurrentPriceSensor(SensorEntity):
     def __init__(self, entry):
         self._entry = entry
         self._attr_name = "NSP Current Price"
-        # Adding _v218 forces a brand new clean database entry (Line Graph)
-        self._attr_unique_id = f"{entry.entry_id}_curr_price_v218"
+        # Fresh ID to force a clean line graph in the DB
+        self._attr_unique_id = f"{entry.entry_id}_curr_price_v219"
 
     @property
     def native_value(self):
@@ -56,7 +56,7 @@ class NSPCurrentPeriodSensor(SensorEntity):
     def __init__(self, entry):
         self._entry = entry
         self._attr_name = "NSP Current Period"
-        self._attr_unique_id = f"{entry.entry_id}_curr_period_v218"
+        self._attr_unique_id = f"{entry.entry_id}_curr_period_v219"
     @property
     def state(self): return calculate_period(datetime.now())
 
@@ -67,7 +67,7 @@ class NSPNextPriceSensor(SensorEntity):
     def __init__(self, entry):
         self._entry = entry
         self._attr_name = "NSP Next Price"
-        self._attr_unique_id = f"{entry.entry_id}_next_price_v218"
+        self._attr_unique_id = f"{entry.entry_id}_next_price_v219"
     @property
     def native_value(self):
         return get_price(calculate_period(datetime.now() + timedelta(hours=1)), self._entry)
@@ -76,7 +76,7 @@ class NSPNextPeriodSensor(SensorEntity):
     def __init__(self, entry):
         self._entry = entry
         self._attr_name = "NSP Next Period"
-        self._attr_unique_id = f"{entry.entry_id}_next_period_v218"
+        self._attr_unique_id = f"{entry.entry_id}_next_period_v219"
     @property
     def state(self): return calculate_period(datetime.now() + timedelta(hours=1))
 
@@ -84,6 +84,6 @@ class NSPTaxActiveSensor(SensorEntity):
     def __init__(self, entry):
         self._entry = entry
         self._attr_name = "NSP Tax Active"
-        self._attr_unique_id = f"{entry.entry_id}_tax_active_v218"
+        self._attr_unique_id = f"{entry.entry_id}_tax_active_v219"
     @property
     def state(self): return "Yes" if self._entry.options.get(CONF_INCLUDE_TAX, True) else "No"
