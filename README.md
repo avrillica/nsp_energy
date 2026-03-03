@@ -40,6 +40,8 @@ The integration follows the official NSP TOD schedule:
 You can update your rates at any time by clicking **Configure** on the integration card. 
 > **Note:** We recommend keeping the default 2026 rates unless NSP announces a mid-year tariff change.
 
+*Disclaimer: This integration is a community project and is not affiliated with or endorsed by Nova Scotia Power.*
+
 
 ## 💰 Total Daily Cost Sensor
 Add this to your `configuration.yaml`. Replace `sensor.your_meter` with your actual energy sensor:
@@ -54,6 +56,7 @@ template:
           {{ (states('sensor.your_meter') | float * states('sensor.nsp_current_price') | float) | round(2) }}
 
 ---
-*Disclaimer: This integration is a community project and is not affiliated with or endorsed by Nova Scotia Power.*
+
+
 
 
