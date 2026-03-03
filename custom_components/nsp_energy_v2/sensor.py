@@ -1,4 +1,4 @@
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorDeviceClass, SensorStateClass
 from datetime import datetime, timedelta
 from .const import DOMAIN, CONF_PEAK_PRICE, CONF_MID_PRICE, CONF_OFFPEAK_PRICE, CONF_INCLUDE_TAX
 
@@ -22,7 +22,7 @@ def calculate_period(target_time):
         elif (12 <= hour < 16): return "mid_peak"
         else: return "off_peak"
     else:
-        # Non-Winter (March-Nov): Mid-Peak 7am-11pm
+        # March-Nov Schedule: Mid-Peak 7am-11pm
         return "mid_peak" if (7 <= hour < 23) else "off_peak"
 
 def get_price(period, entry):
@@ -38,8 +38,13 @@ def get_price(period, entry):
 
 class NSPCurrentPriceSensor(SensorEntity):
     def __init__(self, entry):
-        self._entry, self._attr_name = entry, "NSP Current Price"
-        self._attr_unique_id, self._attr_unit_of_measurement = f"{entry.entry_id}_curr_price", "$/kWh"
+        self._entry = entry
+        self._attr_name = "NSP Current Price"
+        self._attr_unique_id = f"{entry.entry_id}_curr_price"
+        self._attr_unit_of_measurement = "$/kWh"
+        self._attr_device_class = SensorDeviceClass.MONETARY
+        self._attr_state_class = SensorStateClass.MEASUREMENT
+
     @property
     def state(self): return get_price(calculate_period(datetime.now()), self._entry)
 
@@ -52,8 +57,13 @@ class NSPCurrentPeriodSensor(SensorEntity):
 
 class NSPNextPriceSensor(SensorEntity):
     def __init__(self, entry):
-        self._entry, self._attr_name = entry, "NSP Next Price"
-        self._attr_unique_id, self._attr_unit_of_measurement = f"{entry.entry_id}_next_price", "$/kWh"
+        self._entry = entry
+        self._attr_name = "NSP Next Price"
+        self._attr_unique_id = f"{entry.entry_id}_next_price"
+        self._attr_unit_of_measurement = "$/kWh"
+        self._attr_device_class = SensorDeviceClass.MONETARY
+        self._attr_state_class = SensorStateClass.MEASUREMENT
+
     @property
     def state(self): return get_price(calculate_period(datetime.now() + timedelta(hours=1)), self._entry)
 
