@@ -41,15 +41,6 @@ You can update your rates at any time by clicking **Configure** on the integrati
 > **Note:** We recommend keeping the default 2026 rates unless NSP announces a mid-year tariff change.
 
 
-# NSP Energy Monitor (v2.1.8)
-
-## 📊 Sensors
-1. **NSP Current Price**: $/kWh (Line graph supported)
-2. **NSP Current Period**: Current TOD period
-3. **NSP Next Price**: Forecasted price
-4. **NSP Next Period**: Forecasted period
-5. **NSP Tax Active**: Tax status (Yes/No)
-
 ## 💰 Total Daily Cost Sensor
 Add this to your `configuration.yaml`. Replace `sensor.your_meter` with your actual energy sensor:
 
@@ -64,4 +55,5 @@ template:
 
 ---
 *Disclaimer: This integration is a community project and is not affiliated with or endorsed by Nova Scotia Power.*
+
 
