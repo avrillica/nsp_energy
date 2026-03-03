@@ -1,4 +1,4 @@
-# NSP Energy Monitor (v2.1.8)
+# NSP Energy Monitor (v2.1.9)
 
 A custom Home Assistant integration for **Nova Scotia Power (NSP)** customers on the **Time-of-Day (TOD)** rate plan. This integration provides real-time pricing and period tracking based on the official 2026 rate schedule.
 
@@ -56,6 +56,7 @@ template:
           {{ (states('sensor.your_meter') | float * states('sensor.nsp_current_price') | float) | round(2) }}
 
 ---
+
 
 
 
