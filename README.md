@@ -55,9 +55,36 @@ template:
         state: >
           {{ (states('sensor.your_meter') | float * states('sensor.nsp_current_price') | float) | round(2) }}
 
----
+```
 
 
+### Example Automation
+Add this to your `automations.yaml` to monitor the Dryer and Dishwasher:
+
+```yaml
+automation:
+  - alias: "NSP: Peak Rate Usage Alert"
+    description: "Triggers if power draw > 50W during Peak hours"
+    trigger:
+      - platform: numeric_state
+        entity_id: 
+          - sensor.dryer_power
+          - sensor.your_meter # Dishwasher
+        above: 50
+    condition:
+      - condition: template
+        value_template: "{{ states('sensor.nsp_current_period').lower() == 'peak' }}"
+    action:
+      - service: notify.mobile_app_your_device_name
+        data:
+          title: "⚠️ Expensive Energy Warning"
+          message: "An appliance was started during a PEAK period. Rates are currently at their highest."
+    mode: single
+
+```
+
+Future Updates
+Dynamic Pricing: Future versions will further streamline the UI for updating utility rates directly from the integration's configuration page.
 
 
 
